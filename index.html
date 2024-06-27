@@ -1,4 +1,8 @@
-<h2>Hello world</h2>
+<head>
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
+</head>
+<body>
+  <h2>Hello world</h2>
 <iframe id="iframe"></iframe>
 <img id="img" />
 <script>
@@ -19,3 +23,4 @@
     elem_img.src = `${requestbin}/${elem_iframe.contentWindow.frames.length}`;
   };
 </script>
+</body>
