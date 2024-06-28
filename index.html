@@ -5,10 +5,10 @@
   const current_url = new URL(location.href);
   const params = current_url.searchParams;
 //   const url = params.get('url');
-  const url = 'http://host3.dreamhack.games:21203/';
+  // const url = 'http://host3.dreamhack.games:21203/';
+  const url = 'http://127.0.0.1:8000/';
   const query = params.get('query');
-//   const requestbin = params.get('requestbin');
-  const requestbin = 'https://dpfkvvd.request.dreamhack.games';
+  const requestbin = params.get('requestbin') || 'https://mqzietu.request.dreamhack.games';
 
   console.log('url', url);
   console.log('query', query);
